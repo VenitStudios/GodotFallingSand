@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://chjle84vwq27w"]
+
+[ext_resource type="Script" path="res://FallingSand/FallingSandSim.gd" id="1_hv5ei"]
+
+[node name="FallingSandSim" type="TextureRect"]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_hv5ei")
+viewport_size = Vector2i(64, 64)
+viewport_scale = Vector2i(12, 12)
