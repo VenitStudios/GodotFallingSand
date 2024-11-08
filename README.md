@@ -4,6 +4,6 @@ Falling Sand Simulator Built In Godot 4.3
 
 
 Known Issues:
-  - Fire Seems to Cause "Phantom" Cells that Get Processed but Don't Render.
-  - Potential Problems with Cell Duplication During Simulation (HAVENT LOOKED INTO THIS YET ITS JUST A GUESS).
-  
+  - 01: Potential Problems with Cell Duplication During Simulation (HAVENT LOOKED INTO THIS YET ITS JUST A GUESS).
+  - 02: I Dont think this gives me enough text to say how glitchy the spawners are, If someone that isnt me can refactor the spawner that'd be great :)
+
