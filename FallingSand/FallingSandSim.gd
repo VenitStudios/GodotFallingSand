@@ -172,7 +172,7 @@ class cellTypeLiquid extends cellObject:
 				var v = valids.pick_random()
 				move(position, v, get_cell(v), self)
 				return
-			move(position, right_cell_pos, right_cell, self)
+			if not is_cell_valid(right_cell): move(position, right_cell_pos, right_cell, self)
 
 ## Gas Cell Class.
 class cellTypeGas extends cellObject:
@@ -194,7 +194,7 @@ class cellTypeGas extends cellObject:
 				var v = valids.pick_random()
 				move(position, v, get_cell(v), self)
 				return
-			move(position, right_cell_pos, right_cell, self)
+			if not is_cell_valid(right_cell): move(position, right_cell_pos, right_cell, self)
 
 ## Fire Cell Class.
 class cellTypeFire extends cellObject:
@@ -233,7 +233,7 @@ class cellTypeFire extends cellObject:
 				var v = valids.pick_random()
 				move(position, v, get_cell(v), self)
 				return
-			move(position, right_cell_pos, right_cell, self)
+			if not is_cell_valid(right_cell): move(position, right_cell_pos, right_cell, self)
 
 
 class cellNameStone extends cellTypeSolid:
