@@ -80,6 +80,7 @@ func render_simulation() -> void:
 			var cell = get_cell_at_position(cell_pos)
 			if cell and get_rect().has_point(cell_pos * viewport_scale): frame.set_pixelv(cell_pos, cell.color)
 			if is_instance_valid(cell) and not get_rect().has_point(Vector2i(cell.position * viewport_scale)):
+				# this still doesnt work :(
 				print('deleting off screen cell')
 				set_cell_at_position(cell.position, null, false)
 	
