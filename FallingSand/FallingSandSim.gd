@@ -30,8 +30,9 @@ func init_viewport():
 	self.size = viewport_size * viewport_scale
 	texture_filter = TEXTURE_FILTER_NEAREST
 	Engine.max_fps = 60.0
-	get_window().size = (viewport_size * viewport_scale) + Vector2i(0, 72)
-	get_window().unresizable = true
+	if not OS.get_name().to_lower() == "web":
+		get_window().size = (viewport_size * (viewport_scale + Vector2i(0, 1)))
+		get_window().unresizable = true
 
 func init_ui():
 	if ui: ui.create()
@@ -80,7 +81,6 @@ func render_simulation() -> void:
 			var cell = get_cell_at_position(cell_pos)
 			if cell and get_rect().has_point(cell_pos * viewport_scale): frame.set_pixelv(cell_pos, cell.color)
 			if is_instance_valid(cell) and not get_rect().has_point(Vector2i(cell.position * viewport_scale)):
-				# this still doesnt work :(
 				print('deleting off screen cell')
 				set_cell_at_position(cell.position, null, false)
 	
@@ -212,7 +212,7 @@ class cellTypeFire extends cellObject:
 	func simulate(): 
 		decay += 1
 		color -= Color(decay * 0.01, decay * 0.01, decay * 0.01)
-		if decay >= 40 and simulator.get_cell_at_position(position): 
+		if decay >= 20 and simulator.get_cell_at_position(position): 
 			simulator.set_cell_at_position(position, cellNameSmoke.new())
 			queue_free()
 			return

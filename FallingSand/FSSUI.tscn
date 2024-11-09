@@ -12,52 +12,17 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_wm65r")
 
-[node name="ColorRect" type="ColorRect" parent="."]
-layout_mode = 1
-anchors_preset = -1
-anchor_top = 0.888889
-anchor_right = 1.0
-anchor_bottom = 1.0
-color = Color(0, 0, 0, 1)
-metadata/_edit_use_anchors_ = true
-
-[node name="ScrollContainer" type="ScrollContainer" parent="ColorRect"]
-clip_contents = false
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.00694444
-anchor_top = 0.111111
-anchor_right = 0.833333
-anchor_bottom = 0.888889
-grow_horizontal = 2
-grow_vertical = 2
-follow_focus = true
-vertical_scroll_mode = 0
-metadata/_edit_use_anchors_ = true
-
-[node name="Container" type="GridContainer" parent="ColorRect/ScrollContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_constants/h_separation = 2
-theme_override_constants/v_separation = 2
-columns = 6
-
-[node name="Utils" type="HBoxContainer" parent="ColorRect"]
+[node name="Utils" type="HBoxContainer" parent="."]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 24)
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.833333
-anchor_top = 0.111111
-anchor_right = 0.986111
-anchor_bottom = 0.555556
-grow_horizontal = 0
-grow_vertical = 2
+anchor_right = 1.0
+anchor_bottom = 0.0493827
+grow_horizontal = 2
 metadata/_edit_use_anchors_ = true
 
-[node name="Clear" type="Button" parent="ColorRect/Utils"]
+[node name="Clear" type="Button" parent="Utils"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(64, 24)
 layout_mode = 2
@@ -66,14 +31,40 @@ text = "CLEAR
 clip_text = true
 metadata/_edit_use_anchors_ = true
 
-[node name="ClearDialog" type="ConfirmationDialog" parent="ColorRect/Utils/Clear"]
+[node name="Selection" type="Label" parent="Utils"]
 unique_name_in_owner = true
-title = "Clear The Screen?"
-initial_position = 2
-size = Vector2i(358, 100)
-dialog_text = "Are You Sure You Want To Clear The Screen?"
-dialog_autowrap = true
+custom_minimum_size = Vector2(64, 32)
+layout_mode = 2
+text = "STONE"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[connection signal="pressed" from="ColorRect/Utils/Clear" to="." method="clear_button_pressed"]
-[connection signal="canceled" from="ColorRect/Utils/Clear/ClearDialog" to="." method="_on_clear_dialog_canceled"]
-[connection signal="confirmed" from="ColorRect/Utils/Clear/ClearDialog" to="." method="_on_clear_dialog_confirmed"]
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.816327
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.0177324, 0.0177324, 0.0177324, 1)
+metadata/_edit_use_anchors_ = true
+
+[node name="ScrollContainer" type="ScrollContainer" parent="ColorRect"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.592593
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+follow_focus = true
+vertical_scroll_mode = 0
+metadata/_edit_use_anchors_ = true
+
+[node name="Container" type="HBoxContainer" parent="ColorRect/ScrollContainer"]
+unique_name_in_owner = true
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[connection signal="pressed" from="Utils/Clear" to="." method="clear_button_pressed"]

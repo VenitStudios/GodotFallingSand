@@ -9,7 +9,7 @@ offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("1_hv5ei")
 viewport_size = Vector2i(98, 98)
-viewport_scale = Vector2i(8, 8)
+viewport_scale = Vector2i(6, 5)
 ui = NodePath("FSSUI")
 metadata/_edit_use_anchors_ = true
 
