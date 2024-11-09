@@ -2,10 +2,6 @@ class_name FallingSandSim extends TextureRect
 
 
 
-
-
-
-
 signal run_simulation
 
 ## Defines the Size of the Sim Viewport and by Definition, the Simulation.
@@ -19,25 +15,33 @@ signal run_simulation
 @onready var current_cell := cellObject
 @onready var current_cell_index := 0
 
-@onready var cells := [cellNameStone, cellNameSand, cellNameWater, cellNameOil, cellNameFire, cellNameSpawner]
+@onready var cells := [cellNameStone, cellNameSand, cellNameWater, cellNameOil, cellNameFire, cellNameSmoke, cellNameSpawner]
+@export var ui := FSSUI.new()
 
 var mouse_held_down = false
 
 func _ready() -> void:
 	init_viewport()
+	init_ui()
 	render_simulation()
 
 func init_viewport():
+	get_viewport().gui_embed_subwindows = false
 	self.size = viewport_size * viewport_scale
 	texture_filter = TEXTURE_FILTER_NEAREST
 	Engine.max_fps = 60.0
-	get_window().size = viewport_size * viewport_scale
+	get_window().size = (viewport_size * viewport_scale) + Vector2i(0, 72)
 	get_window().unresizable = true
+
+func init_ui():
+	if ui: ui.create()
 
 func _input(event: InputEvent) -> void:
 	mouse_held_down = Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) or Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT)
-	if Input.is_mouse_button_pressed(MOUSE_BUTTON_WHEEL_UP): current_cell_index = wrapi(current_cell_index - 1, 0, cells.size())
-	if Input.is_mouse_button_pressed(MOUSE_BUTTON_WHEEL_DOWN): current_cell_index = wrapi(current_cell_index + 1, 0, cells.size())
+	
+	# commented out for addition of the UI
+	#if Input.is_mouse_button_pressed(MOUSE_BUTTON_WHEEL_UP): current_cell_index = wrapi(current_cell_index - 1, 0, cells.size())
+	#if Input.is_mouse_button_pressed(MOUSE_BUTTON_WHEEL_DOWN): current_cell_index = wrapi(current_cell_index + 1, 0, cells.size())
 
 func _process(delta: float) -> void:
 	if mouse_held_down:
@@ -54,14 +58,12 @@ func _process(delta: float) -> void:
 		if Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT) and get_rect().has_point(event_position): 
 			var cell = get_cell_at_position(event_position)
 			if cell: set_cell_at_position(event_position, null)
-
-	if cell_data.size() > 0: 
-		
-		for cell in cell_data.keys(): 
-			if not get_rect().has_point(cell * viewport_scale):
-				cell_data.get(cell).queue_free()
-				cell_data.erase(cell)
-		render_simulation()
+	
+	for cell in cell_data.keys(): 
+		if not get_rect().has_point(cell * viewport_scale):
+			cell_data.get(cell).queue_free()
+			cell_data.erase(cell)
+	render_simulation()
 
 ## Runs then Renders the Simulation
 func render_simulation() -> void:
@@ -77,25 +79,21 @@ func render_simulation() -> void:
 		if cell_pos is Vector2i:
 			var cell = get_cell_at_position(cell_pos)
 			if cell and get_rect().has_point(cell_pos * viewport_scale): frame.set_pixelv(cell_pos, cell.color)
-	for cell in cell_list:
-		if is_instance_valid(cell):
-			if not get_rect().has_point(Vector2(cell.position * viewport_scale)):
-				set_cell_at_position(cell.position, null, false)
+			if is_instance_valid(cell) and not get_rect().has_point(Vector2i(cell.position * viewport_scale)):
 				print('deleting off screen cell')
+				set_cell_at_position(cell.position, null, false)
 	
 	if not frame.is_empty():
 		texture = ImageTexture.create_from_image(frame)
 
 ## Sets the Cell at the Given Position to the Given Type
 func set_cell_at_position(cell_position : Vector2i, cell : cellObject, avoid_deletion := false) -> void:
-	if not get_rect().has_point(cell_position * viewport_scale): return
+	if not get_rect().has_point(cell_position * viewport_scale): return 
 	var cell_at_pos = cell_data.get(cell_position)
 	if cell == null:
 		if cell_data.has(cell_position):  cell_data.erase(cell_position)
 		if not avoid_deletion and cell_at_pos:
 			cell_at_pos.queue_free()
-			
-		
 		return
 	
 	cell_data[cell_position] = cell
@@ -110,6 +108,7 @@ func set_cell_at_position(cell_position : Vector2i, cell : cellObject, avoid_del
 		
 		return
 	return 
+
 ## Returns the Cell at the Given Position
 func get_cell_at_position(cell_position : Vector2i) -> cellObject: 
 	if cell_data.has(cell_position) and is_instance_valid(cell_data[cell_position]): return cell_data[cell_position]
@@ -294,8 +293,8 @@ class cellNameSmoke extends cellTypeGas:
 	
 	func simulate_alt():
 		decay += 1
-		color -= Color(decay * 0.2, decay * 0.2, decay * 0.2)
-		if decay >= 2 and simulator.get_cell_at_position(position): 
+		color -= Color(decay * 0.01, decay * 0.01, decay * 0.01)
+		if decay >= 10 and simulator.get_cell_at_position(position): 
 			simulator.set_cell_at_position(position, null)
 			queue_free()
 			return

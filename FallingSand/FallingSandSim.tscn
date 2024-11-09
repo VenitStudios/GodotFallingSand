@@ -1,10 +1,17 @@
-[gd_scene load_steps=2 format=3 uid="uid://chjle84vwq27w"]
+[gd_scene load_steps=3 format=3 uid="uid://chjle84vwq27w"]
 
 [ext_resource type="Script" path="res://FallingSand/FallingSandSim.gd" id="1_hv5ei"]
+[ext_resource type="PackedScene" uid="uid://c0jxaecjekupv" path="res://FallingSand/FSSUI.tscn" id="2_r5t07"]
 
-[node name="FallingSandSim" type="TextureRect"]
+[node name="FallingSandSim" type="TextureRect" node_paths=PackedStringArray("ui")]
+process_mode = 1
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("1_hv5ei")
-viewport_size = Vector2i(64, 64)
-viewport_scale = Vector2i(12, 12)
+viewport_size = Vector2i(98, 98)
+viewport_scale = Vector2i(8, 8)
+ui = NodePath("FSSUI")
+metadata/_edit_use_anchors_ = true
+
+[node name="FSSUI" parent="." instance=ExtResource("2_r5t07")]
+layout_mode = 1
